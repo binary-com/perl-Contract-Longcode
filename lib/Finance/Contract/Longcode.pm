@@ -3,6 +3,8 @@ package Finance::Contract::Longcode;
 use strict;
 use warnings;
 
+our $VERSION = '0.001';
+
 use File::ShareDir ();
 use Time::Duration::Concise;
 use Scalar::Util qw(looks_like_number);
