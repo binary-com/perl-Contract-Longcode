@@ -5,6 +5,18 @@ use warnings;
 
 our $VERSION = '0.001';
 
+=head1 NAME
+
+Finance::Contract::Longcode - contains utility functions to convert a shortcode to human readable longcode and shortcode to a hash reference parameters.
+
+=head1 SYNOPSIS
+
+    use Finance::Contract::Longcode qw(shortcode_to_longcode);
+
+    my $longcode = shortcode_to_longcode('PUT_FRXEURNOK_100_1394590423_1394591143_S0P_0','USD');
+
+=cut
+
 use File::ShareDir ();
 use Time::Duration::Concise;
 use Scalar::Util qw(looks_like_number);
@@ -22,6 +34,14 @@ use constant {
 };
 
 my $LONGCODES = LoadFile(File::ShareDir::dist_file('Finance-Contract-Longcode', 'longcodes.yml'));
+
+=head2 shortcode_to_longcode
+
+Converts shortcode to human readable longcode. Requires a shortcode and currency.
+
+Returns an array reference of strings.
+
+=cut
 
 sub shortcode_to_longcode {
     my ($shortcode, $currency) = @_;
@@ -74,6 +94,14 @@ sub shortcode_to_longcode {
 
     return \@longcode;
 }
+
+=head2 shortcode_to_parameters
+
+Converts shortcode to a hash reference parameters. Requires shortcode and currency.
+
+Returns a hash reference.
+
+=cut
 
 sub shortcode_to_parameters {
     my ($shortcode, $currency, $is_sold) = @_;
@@ -181,6 +209,8 @@ sub shortcode_to_parameters {
 
     return $bet_parameters;
 }
+
+## INTERNAL METHODS ##
 
 sub _barrier_display_text {
     my ($supplied_barrier, $underlying) = @_;
