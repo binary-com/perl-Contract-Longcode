@@ -1,8 +1,10 @@
-requires 'Moo',         '>= 1.006001';
-requires 'Parse::Lex',  '>= 2.21';
-requires 'Set::Scalar', '>= 1.29';
-requires 'Try::Tiny',   '>= 0.19';
-requires 'indirect',    '>= 0.37';
+requires 'Finance::Contract',   '>= 0.010';
+requires 'Time::Duration::Concise';
+requires 'Format::Util::Numbers';
+requires 'Exporter';
+requires 'Date::Utility';
+requires 'File::ShareDir';
+requires 'Scalar::Util';
 
 on test => sub {
     requires 'Test::More',                      '>= 0.98';
