@@ -24,6 +24,8 @@ use Finance::Contract::Category;
 use Format::Util::Numbers qw(formatnumber);
 use Quant::Framework::Underlying;
 use Date::Utility;
+use YAML::XS qw(LoadFile);
+
 use Exporter qw(import);
 
 our @EXPORT_OK = qw(shortcode_to_longcode shortcode_to_parameters);
