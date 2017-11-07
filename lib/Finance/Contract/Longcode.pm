@@ -79,10 +79,10 @@ sub shortcode_to_longcode {
 
     my ($when_end, $when_start) = ([], []);
     if ($expiry_type eq 'intraday_fixed_expiry') {
-        $when_end = [$date_expiry->datetime . ' GMT'];
+        $when_end = [$date_expiry->datetime . ' UTC'];
     } elsif ($expiry_type eq 'intraday') {
         $when_end = [Time::Duration::Concise->new(interval => $date_expiry->epoch - $date_start->epoch)->as_string];
-        $when_start = ($is_forward_starting) ? [$date_start->db_timestamp . ' GMT'] : [$LONGCODES->{contract_start_time}];
+        $when_start = ($is_forward_starting) ? [$date_start->db_timestamp . ' UTC'] : [$LONGCODES->{contract_start_time}];
     } elsif ($expiry_type eq 'daily') {
         $when_end = [$LONGCODES->{close_on}, $date_expiry->date];
     } elsif ($expiry_type eq 'tick') {
@@ -122,7 +122,6 @@ Returns a hash reference.
 sub shortcode_to_parameters {
     my ($shortcode, $currency, $is_sold) = @_;
 
-    $currency //= undef;
     $is_sold  //= 0;
 
     my ($bet_type, $underlying_symbol, $payout, $date_start, $date_expiry, $barrier, $barrier2, $prediction, $fixed_expiry, $tick_expiry,
