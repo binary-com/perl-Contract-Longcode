@@ -28,7 +28,7 @@ use YAML::XS qw(LoadFile);
 
 use Exporter qw(import);
 
-our @EXPORT_OK = qw(shortcode_to_longcode shortcode_to_parameters);
+our @EXPORT_OK = qw(shortcode_to_longcode shortcode_to_parameters get_longcodes);
 
 use constant {
     SECONDS_IN_A_DAY         => 86400,
@@ -36,6 +36,16 @@ use constant {
 };
 
 my $LONGCODES = LoadFile(File::ShareDir::dist_file('Finance-Contract-Longcode', 'longcodes.yml'));
+
+=head2 get_longcodes
+
+Returns a hash reference of longcode related strings
+
+=cut
+
+sub get_longcodes {
+    return $LONGCODES;
+}
 
 =head2 shortcode_to_longcode
 
