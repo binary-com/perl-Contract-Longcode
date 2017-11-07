@@ -17,16 +17,15 @@ Finance::Contract::Longcode - contains utility functions to convert a shortcode 
 
 =cut
 
-use File::ShareDir ();
-use Time::Duration::Concise;
-use Scalar::Util qw(looks_like_number);
-use Finance::Contract::Category;
-use Format::Util::Numbers qw(formatnumber);
-use Quant::Framework::Underlying;
 use Date::Utility;
-use YAML::XS qw(LoadFile);
-
 use Exporter qw(import);
+use File::ShareDir ();
+use Finance::Contract::Category;
+use Finance::Underlying;
+use Format::Util::Numbers qw(formatnumber);
+use Scalar::Util qw(looks_like_number);
+use Time::Duration::Concise;
+use YAML::XS qw(LoadFile);
 
 our @EXPORT_OK = qw(shortcode_to_longcode shortcode_to_parameters get_longcodes);
 
@@ -64,7 +63,7 @@ sub shortcode_to_longcode {
         die 'Invalid shortcode. No expiry is specified.';
     }
 
-    my $underlying          = Quant::Framework::Underlying->new($params->{underlying});
+    my $underlying          = Finance::Underlying->by_symbol($params->{underlying});
     my $contract_type       = $params->{bet_type};
     my $is_forward_starting = $params->{starts_as_forward_starting};
     my $date_start          = Date::Utility->new($params->{date_start});
@@ -241,7 +240,7 @@ sub _barrier_display_text {
 
     return [$LONGCODES->{entry_spot}] if abs($pips) == 0;
 
-    if ($underlying->market->name eq 'forex') {
+    if ($underlying->market eq 'forex') {
         $string = $pips > 0 ? $LONGCODES->{entry_spot_plus_plural} : $LONGCODES->{entry_spot_minus_plural};
         # taking the absolute value of $pips because the sign will be taken care of in the $string, e.g. entry spot plus/minus $pips.
         $pips = abs($pips);

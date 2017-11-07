@@ -5,6 +5,7 @@ requires 'Exporter';
 requires 'Date::Utility';
 requires 'File::ShareDir';
 requires 'Scalar::Util';
+requires 'Finance::Underlying';
 
 on test => sub {
     requires 'Test::More',                      '>= 0.98';
