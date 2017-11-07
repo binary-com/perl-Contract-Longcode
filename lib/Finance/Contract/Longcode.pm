@@ -116,7 +116,7 @@ sub shortcode_to_longcode {
     } elsif (exists $params->{barrier}) {
         push @longcode, _barrier_display_text($params->{barrier}, $underlying);
     } else {
-        # the default to this was set by BOM::Product::Contract::Strike but we skipped that for speed reason
+        # the default to the pip size of an underlying
         push @longcode, [$underlying->pip_size];
     }
 
