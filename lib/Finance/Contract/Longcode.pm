@@ -39,16 +39,16 @@ my $LONGCODES = LoadFile(File::ShareDir::dist_file('Finance-Contract-Longcode', 
 
 =head2 shortcode_to_longcode
 
-Converts shortcode to human readable longcode. Requires a shortcode and currency.
+Converts shortcode to human readable longcode. Requires a shortcode.
 
 Returns an array reference of strings.
 
 =cut
 
 sub shortcode_to_longcode {
-    my ($shortcode, $currency) = @_;
+    my ($shortcode) = @_;
 
-    my $params = shortcode_to_parameters($shortcode, $currency);
+    my $params = shortcode_to_parameters($shortcode);
 
     if ($params->{bet_type} !~ /ico/i && !(defined $params->{date_expiry} || defined $params->{tick_count})) {
         die 'Invalid shortcode. No expiry is specified.';
@@ -66,7 +66,7 @@ sub shortcode_to_longcode {
 
     die 'Could not find longcode for ' . $longcode_key unless $LONGCODES->{$longcode_key};
 
-    my @longcode = ($LONGCODES->{$longcode_key}, $currency, formatnumber('price', $currency, $params->{amount}), $underlying->display_name);
+    my @longcode = ($LONGCODES->{$longcode_key}, $underlying->display_name);
 
     my ($when_end, $when_start) = ([], []);
     if ($expiry_type eq 'intraday_fixed_expiry') {
@@ -99,7 +99,12 @@ sub shortcode_to_longcode {
 
 =head2 shortcode_to_parameters
 
-Converts shortcode to a hash reference parameters. Requires shortcode and currency.
+Converts shortcode to a hash reference parameters. Requires shortcode.
+
+Optional parameters:
+
+- currency is provided if you wish to have a complete list of parameters to create a contract.
+- is_sold is to indicate of a contract is sold.
 
 Returns a hash reference.
 
@@ -107,6 +112,9 @@ Returns a hash reference.
 
 sub shortcode_to_parameters {
     my ($shortcode, $currency, $is_sold) = @_;
+
+    $currency //= undef;
+    $is_sold  //= 0;
 
     my ($bet_type, $underlying_symbol, $payout, $date_start, $date_expiry, $barrier, $barrier2, $prediction, $fixed_expiry, $tick_expiry,
         $how_many_ticks, $forward_start, $binaryico_per_token_bid_price,
