@@ -22,6 +22,7 @@ use Exporter qw(import);
 use File::ShareDir ();
 use Finance::Contract::Category;
 use Finance::Underlying;
+use Finance::Asset;
 use Format::Util::Numbers qw(formatnumber);
 use Scalar::Util qw(looks_like_number);
 use Time::Duration::Concise;
@@ -122,7 +123,7 @@ Returns a hash reference.
 sub shortcode_to_parameters {
     my ($shortcode, $currency, $is_sold) = @_;
 
-    $is_sold  //= 0;
+    $is_sold //= 0;
 
     my ($bet_type, $underlying_symbol, $payout, $date_start, $date_expiry, $barrier, $barrier2, $prediction, $fixed_expiry, $tick_expiry,
         $how_many_ticks, $forward_start, $binaryico_per_token_bid_price,
@@ -257,10 +258,11 @@ sub _strike_string {
     my ($string, $underlying_symbol, $contract_type_code) = @_;
 
     # do not use create_underlying because this is going to be very slow due to dependency on chronicle.
-    my $underlying = Quant::Framework::Underlying->new($underlying_symbol);
+    my $underlying = Finance::Underlying->by_symbol($underlying_symbol);
+    my $market     = Finance::Asset::Market::Registry->instance->get($underlying->market);
 
     $string /= FOREX_BARRIER_MULTIPLIER
-        if ($contract_type_code !~ /^DIGIT/ and $string and looks_like_number($string) and $underlying->market->absolute_barrier_multiplier);
+        if ($contract_type_code !~ /^DIGIT/ and $string and looks_like_number($string) and $market->absolute_barrier_multiplier);
 
     return $string;
 }
