@@ -6,6 +6,7 @@ requires 'Date::Utility';
 requires 'File::ShareDir';
 requires 'Scalar::Util';
 requires 'Finance::Underlying';
+requires 'YAML::XS';
 
 on test => sub {
     requires 'Test::More',                      '>= 0.98';

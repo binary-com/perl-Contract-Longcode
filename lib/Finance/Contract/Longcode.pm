@@ -229,9 +229,9 @@ sub _barrier_display_text {
     return $underlying->pipsized_value($supplied_barrier) if $supplied_barrier =~ /^\d+(?:\.\d{0,12})?$/;
 
     my ($string, $pips);
-    if ($supplied_barrier =~ /^S[-+]?\d+P$/) {
-        ($pips) = $supplied_barrier =~ /S([+-]?\d+)P/;
-    } elsif ($supplied_barrier =~ /^[+-](?:\d+\.?\d{0,12})/) {
+    if ($supplied_barrier =~ /^S([-+]?\d+)P$/) {
+        $pips = $1;
+    } elsif ($supplied_barrier =~ /^[+-](?:\d+\.?\d{0,12})$/) {
         $pips = $supplied_barrier / $underlying->pip_size;
     } else {
         die "Unrecognized supplied barrier [$supplied_barrier]";
