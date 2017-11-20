@@ -236,11 +236,11 @@ sub shortcode_to_parameters {
 
     # ICO
     if ($bet_type eq 'BINARYICO') {
-        $bet_parameters->{amount_type}                   = 'stake';
-        $bet_parameters->{amount}                        = $binaryico_per_token_bid_deposit_price;
-        $bet_parameters->{binaryico_number_of_tokens}    = $binaryico_number_of_tokens;
-        $bet_parameters->{binaryico_per_token_bid_price} = $binaryico_per_token_bid_deposit_price;
-        $bet_parameters->{binaryico_deposit_percentage}  = $binaryico_deposit_percentage;
+        $bet_parameters->{amount_type}                           = 'stake';
+        $bet_parameters->{amount}                                = $binaryico_per_token_bid_deposit_price;
+        $bet_parameters->{binaryico_number_of_tokens}            = $binaryico_number_of_tokens;
+        $bet_parameters->{binaryico_per_token_bid_deposit_price} = $binaryico_per_token_bid_deposit_price;
+        $bet_parameters->{binaryico_deposit_percentage}          = $binaryico_deposit_percentage;
     }
 
     return $bet_parameters;
