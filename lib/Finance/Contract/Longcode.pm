@@ -217,6 +217,13 @@ sub shortcode_to_parameters {
         $how_many_ticks    = $5;
         $tick_expiry       = 1;
         $selected_tick     = $6;
+    } elsif ($shortcode =~ /^(RUN[^_]+)_(R?_?[^_\W]+)_(\d*\.?\d*)_(\d+)_(\d+)t$/) {       #RUNHIGH/RUNLOW contract type
+        $bet_type          = $1;
+        $underlying_symbol = $2;
+        $payout            = $3;
+        $date_start        = $4;
+        $how_many_ticks    = $5;
+        $tick_expiry       = 1;
     } elsif ($shortcode =~ /^([^_]+)_(R?_?[^_\W]+)_(\d*\.?\d*)_(\d+)_(\d+)(?<expiry_cond>[FT]?)$/) {    # Contract without barrier
         $bet_type            = $1;
         $underlying_symbol   = $2;
