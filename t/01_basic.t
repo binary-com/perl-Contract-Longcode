@@ -5,7 +5,7 @@ use Test::More;
 
 use Finance::Contract::Longcode qw/shortcode_to_parameters/;
 
-my $params = shortcode_to_parameters('CALLE_1HZ100V_9.073E-05_1594023511_5T_S0P_0', 'BTC');
+my $params = shortcode_to_parameters('CALLE_R_25_9.073E-05_1594023511_5T_S0P_0', 'BTC');
 is_deeply($params, {
         amount => "9.073E-05",
         amount_type => "payout",
@@ -16,9 +16,9 @@ is_deeply($params, {
         duration => "5t",
         fixed_expiry => undef,
         is_sold => 0,
-        shortcode => "CALLE_1HZ100V_9.073E-05_1594023511_5T_S0P_0",
+        shortcode => "CALLE_R_25_9.073E-05_1594023511_5T_S0P_0",
         starts_as_forward_starting => 0,
-        underlying => "1HZ100V",
+        underlying => "R_25",
     }, "is able to parse shortcode with sufficient notation");
 
 $params = shortcode_to_parameters('DIGITODD_R_10_100_1583976032_1T', 'USD');
