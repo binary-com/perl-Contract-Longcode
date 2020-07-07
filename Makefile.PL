@@ -15,8 +15,11 @@ install_share dist => "share";
 my %WriteMakefileArgs = (
   "ABSTRACT" => "contains utility functions to convert a binary.com's shortcode to human readable longcode and shortcode to a hash reference parameters.",
   "AUTHOR" => "binary.com <cpan\@binary.com>",
+  "BUILD_REQUIRES" => {
+    "Test::More" => "0.98"
+  },
   "CONFIGURE_REQUIRES" => {
-    "ExtUtils::MakeMaker" => "6.48",
+    "ExtUtils::MakeMaker" => "6.64",
     "File::ShareDir::Install" => "0.06"
   },
   "DISTNAME" => "Finance-Contract-Longcode",
