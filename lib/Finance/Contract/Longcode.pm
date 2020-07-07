@@ -198,8 +198,6 @@ sub shortcode_to_parameters {
         $date_expiry         = $6;
         $cancellation        = $7;
         $cancellation_tp     = $8;
-
-        
     } elsif ($shortcode =~
         /^([^_]+)_([\w\d]+)_(\d*\.?\d*(?:[Ee]-?\d+)?)_(\d+)(?<start_cond>[F]?)_(\d+)(?<expiry_cond>[FT]?)_(S?-?\d+P?)_(S?-?\d+P?)(?:_(?<extra>[PM])(\d*\.?\d+))?$/)
     {    # Both purchase and expiry date are timestamp (e.g. a 30-min bet)
