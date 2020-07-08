@@ -6,6 +6,7 @@ use Test::More;
 use Finance::Contract::Longcode qw/shortcode_to_parameters/;
 
 my $params = shortcode_to_parameters('CALLE_R_25_9.073E-05_1594023511_5T_S0P_0', 'BTC');
+delete $params->{is_sold};
 is_deeply($params, {
         amount => "9.073E-05",
         amount_type => "payout",
@@ -21,6 +22,7 @@ is_deeply($params, {
     }, "is able to parse shortcode with sufficient notation");
 
 $params = shortcode_to_parameters('DIGITODD_R_10_100_1583976032_1T', 'USD');
+delete $params->{is_sold};
 is_deeply($params, {
         amount => "100",
         amount_type => "payout",
@@ -36,6 +38,7 @@ is_deeply($params, {
 
 
 $params = shortcode_to_parameters('PUT_R_100_0.66_1583976064_1583976079_S0P_0', 'USD');
+delete $params->{is_sold};
 is_deeply($params, {
         amount => "0.66",
         amount_type => "payout",

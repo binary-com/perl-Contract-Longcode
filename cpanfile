@@ -13,10 +13,6 @@ on configure => sub {
     requires 'ExtUtils::MakeMaker', '6.64';
 };
 
-on build => sub {
-    requires 'Test::More';
-};
-
 on test => sub {
     requires 'Test::More',                      '>= 0.98';
     requires 'Test::Most',                      '>= 0.34';
