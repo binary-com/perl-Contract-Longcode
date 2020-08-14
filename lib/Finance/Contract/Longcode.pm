@@ -286,11 +286,6 @@ sub shortcode_to_parameters {
         $bet_parameters->{amount}      = $stake;
     }
 
-    if ($product_type && $product_type eq 'multi_barrier') {
-        $bet_parameters->{product_type}         = $product_type;
-        $bet_parameters->{trading_period_start} = $trading_window_start;
-    }
-
     if (defined $cancellation) {
         $bet_parameters->{cancellation}    = $cancellation;
         $bet_parameters->{cancellation_tp} = $cancellation_tp;
