@@ -214,11 +214,7 @@ sub shortcode_to_parameters {
         }
 
         if ($+{extra}) {
-            # predefined trading window start
-            if ($+{extra} eq 'P') {
-                $product_type         = 'multi_barrier';
-                $trading_window_start = $11;
-            } elsif ($+{extra} eq 'M') {    # multiplier for lookback contracts
+            if ($+{extra} eq 'M') {    # multiplier for lookback contracts
                 $contract_multiplier = $11;
             }
         }
