@@ -89,7 +89,7 @@ sub shortcode_to_longcode {
     my $date_start          = Date::Utility->new($params->{date_start});
     my $date_expiry         = Date::Utility->new($params->{date_expiry});
     my $expiry_type =
-          ($params->{duration} and $params->{duration} =~ /^\d+t$/) ? 'tick'
+          ($params->{duration} and $params->{duration} =~ /^\d+t$/)   ? 'tick'
         : $date_expiry->epoch - $date_start->epoch > SECONDS_IN_A_DAY ? 'daily'
         :                                                               'intraday';
     $expiry_type .= '_fixed_expiry' if $expiry_type eq 'intraday' && !$is_forward_starting && $params->{fixed_expiry};
@@ -109,7 +109,7 @@ sub shortcode_to_longcode {
             value => $date_expiry->epoch - $date_start->epoch
         };
         my $duration = $date_expiry->epoch - $date_start->epoch;
-        $duration = $duration + ($duration % 2);
+        $duration   = $duration + ($duration % 2);
         $when_reset = {
             class => 'Time::Duration::Concise::Localize',
             value => $duration * 0.5
@@ -167,12 +167,12 @@ Returns a hash reference.
 =cut
 
 sub shortcode_to_parameters {
-    my ($shortcode, $currency) = @_;
+    my ($shortcode, $currency, $maybe_args) = @_;
 
     my (
-        $bet_type,      $underlying_symbol, $payout,       $date_start,          $date_expiry,  $barrier,
-        $barrier2,      $fixed_expiry,      $duration,     $contract_multiplier, $product_type, $trading_window_start,
-        $selected_tick, $stake,             $cancellation, $cancellation_tp
+        $bet_type,     $underlying_symbol,    $payout,        $date_start, $date_expiry,
+        $barrier,      $barrier2,             $fixed_expiry,  $duration,   $contract_multiplier,
+        $product_type, $trading_window_start, $selected_tick, $stake,      $cancellation
     );
 
     my $forward_start = 0;
@@ -186,7 +186,7 @@ sub shortcode_to_parameters {
 
     return $legacy_params if (not exists Finance::Contract::Category::get_all_contract_types()->{$initial_bet_type} or $shortcode =~ /_\d+H\d+/);
 
-    if ($shortcode =~ /^(MULTUP|MULTDOWN)_([\w\d]+)_(\d*\.?\d*)_(\d+)_(\d+)_(\d+)_(\d+(?:m|h|s)?)_(\d+\.?\d*)$/) {
+    if ($shortcode =~ /^(MULTUP|MULTDOWN)_([\w\d]+)_(\d*\.?\d*)_(\d+)_(\d+)_(\d+)_(\d+(?:m|h|s)?)(?:_\d+\.?\d*)?$/) {
         $bet_type            = $1;
         $underlying_symbol   = $2;
         $stake               = $3;
@@ -194,7 +194,6 @@ sub shortcode_to_parameters {
         $date_start          = $5;
         $date_expiry         = $6;
         $cancellation        = $7;
-        $cancellation_tp     = $8;
     } elsif ($shortcode =~
         /^([^_]+)_([\w\d]+)_(\d*\.?\d*)_(\d+)(?<start_cond>[F]?)_(\d+)(?<expiry_cond>[FT]?)_(S?-?\d+P?)_(S?-?\d+P?)(?:_(?<extra>[PM])(\d*\.?\d+))?$/)
     {    # Both purchase and expiry date are timestamp (e.g. a 30-min bet)
@@ -286,9 +285,12 @@ sub shortcode_to_parameters {
         $bet_parameters->{amount}      = $stake;
     }
 
-    if (defined $cancellation) {
-        $bet_parameters->{cancellation}    = $cancellation;
-        $bet_parameters->{cancellation_tp} = $cancellation_tp;
+    if ($maybe_args) {
+        $bet_parameters = {%$bet_parameters, %$maybe_args};
+    }
+
+    if ($cancellation) {
+        $bet_parameters->{addon}{cancellation}{duration} = $cancellation;
     }
 
     return $bet_parameters;
