@@ -186,7 +186,7 @@ sub shortcode_to_parameters {
 
     return $legacy_params if (not exists Finance::Contract::Category::get_all_contract_types()->{$initial_bet_type} or $shortcode =~ /_\d+H\d+/);
 
-    if ($shortcode =~ /^(MULTUP|MULTDOWN)_([\w\d]+)_(\d*\.?\d*)_(\d+)_(\d+)_(\d+)_(\d+(?:m|h|s)?)_(\d+\.?\d*)$/) {
+    if ($shortcode =~ /^(MULTUP|MULTDOWN)_([\w\d]+)_(\d*\.?\d*(?:[Ee]-?\d+)?)_(\d+)_(\d+)_(\d+)_(\d+(?:m|h|s)?)_(\d+\.?\d*)$/) {
         $bet_type            = $1;
         $underlying_symbol   = $2;
         $stake               = $3;
@@ -196,7 +196,7 @@ sub shortcode_to_parameters {
         $cancellation        = $7;
         $cancellation_tp     = $8;
     } elsif ($shortcode =~
-        /^([^_]+)_([\w\d]+)_(\d*\.?\d*)_(\d+)(?<start_cond>[F]?)_(\d+)(?<expiry_cond>[FT]?)_(S?-?\d+P?)_(S?-?\d+P?)(?:_(?<extra>[PM])(\d*\.?\d+))?$/)
+        /^([^_]+)_([\w\d]+)_(\d*\.?\d*(?:[Ee]-?\d+)?)_(\d+)(?<start_cond>[F]?)_(\d+)(?<expiry_cond>[FT]?)_(S?-?\d+P?)_(S?-?\d+P?)(?:_(?<extra>[PM])(\d*\.?\d+))?$/)
     {    # Both purchase and expiry date are timestamp (e.g. a 30-min bet)
         $bet_type          = $1;
         $underlying_symbol = $2;
@@ -218,14 +218,14 @@ sub shortcode_to_parameters {
                 $contract_multiplier = $11;
             }
         }
-    } elsif ($shortcode =~ /^([^_]+)_(R?_?[^_\W]+)_(\d*\.?\d*)_(\d+)_(\d+)t_(\d+)$/) {    # TICKHIGH/TICKLOW contract type with selected tick
+    } elsif ($shortcode =~ /^([^_]+)_(R?_?[^_\W]+)_(\d*\.?\d*(?:[Ee]-?\d+)?)_(\d+)_(\d+)t_(\d+)$/) {    # TICKHIGH/TICKLOW contract type with selected tick
         $bet_type          = $1;
         $underlying_symbol = $2;
         $payout            = $3;
         $date_start        = $4;
         $duration          = $5 . 't';
         $selected_tick     = $6;
-    } elsif ($shortcode =~ /^([^_]+)_(R?_?[^_\W]+)_(\d*\.?\d*)_(\d+)_(\d+)(?<expiry_cond>[FT]?)$/) {    # Contract without barrier
+    } elsif ($shortcode =~ /^([^_]+)_(R?_?[^_\W]+)_(\d*\.?\d*(?:[Ee]-?\d+)?)_(\d+)_(\d+)(?<expiry_cond>[FT]?)$/) {    # Contract without barrier
         $bet_type          = $1;
         $underlying_symbol = $2;
         if (grep { $bet_type eq $_ } qw(LBFLOATCALL LBFLOATPUT LBHIGHLOW)) {

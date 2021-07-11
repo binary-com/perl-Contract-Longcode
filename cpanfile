@@ -9,6 +9,10 @@ requires 'Finance::Underlying';
 requires 'Finance::Asset';
 requires 'YAML::XS';
 
+on configure => sub {
+    requires 'ExtUtils::MakeMaker', '6.64';
+};
+
 on test => sub {
     requires 'Test::More',                      '>= 0.98';
     requires 'Test::Most',                      '>= 0.34';
